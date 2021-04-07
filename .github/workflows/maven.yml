@@ -27,7 +27,8 @@ jobs:
       run: mvn -B javadoc:javadoc --file pom.xml
     - name: Stage
       run: |
-        echo ::set-env name=FOO::$(mkdir staging && cp -r target/* staging)
+        mkdir staging
+        cp -r target/* staging
     - name: Deploy Javadoc
       uses: peaceiris/actions-gh-pages@v3
       with:

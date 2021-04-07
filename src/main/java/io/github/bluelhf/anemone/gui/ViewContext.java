@@ -3,9 +3,7 @@ package io.github.bluelhf.anemone.gui;
 import io.github.bluelhf.anemone.Anemones;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
-import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.Inventory;
 
 import java.util.ArrayList;
@@ -97,15 +95,16 @@ public class ViewContext {
     }
 
     /**
-     * Returns the host {@link Anemone} of this ViewContext
-     * @return The host of this {@link Anemone} of this ViewContext
+     * Returns the {@link Anemone} of this ViewContext
+     * @return The {@link Anemone} of this ViewContext
      * */
-    public Anemone getHost() {
+    public Anemone getAnemone() {
         return host;
     }
 
     /**
      * Calls the click method of the host {@link Anemone}.
+     * @param event The event to call the method with
      * @deprecated Internal use only.
      * */
     @Deprecated
@@ -118,6 +117,7 @@ public class ViewContext {
 
     /**
      * Calls the drag method of the host {@link Anemone}.
+     * @param event The event to call the method with
      * @deprecated Internal use only.
      * */
     @Deprecated
@@ -136,7 +136,7 @@ public class ViewContext {
      * @deprecated Internal use only.
      * */
     @Deprecated
-    public void onClose(InventoryCloseEvent event) {
+    public void onClose() {
         host.onClose(this);
     }
 
@@ -145,7 +145,7 @@ public class ViewContext {
      * @deprecated Internal use only.
      * */
     @Deprecated
-    public void onOpen(InventoryOpenEvent event) {
+    public void onOpen() {
         host.onOpen(this);
     }
 

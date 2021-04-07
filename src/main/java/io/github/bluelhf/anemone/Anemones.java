@@ -164,7 +164,7 @@ public class Anemones implements Listener {
     private void onClose(InventoryCloseEvent event) {
         if (!entityContexts.containsKey(event.getPlayer())) return;
         ViewContext context = entityContexts.get(event.getPlayer());
-        context.onClose(event);
+        context.onClose();
         entityContexts.remove(context.getViewer());
     }
 
@@ -172,7 +172,7 @@ public class Anemones implements Listener {
     private void onOpen(InventoryOpenEvent event) {
         if (!entityContexts.containsKey(event.getPlayer())) return;
         ViewContext context = entityContexts.get(event.getPlayer());
-        context.onOpen(event);
+        context.onOpen();
     }
 
     private void close() {

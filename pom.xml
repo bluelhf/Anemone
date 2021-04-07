@@ -14,6 +14,9 @@
     <properties>
         <java.version>11</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <paper.base>1.16</paper.base>
+        <paper.qualifier>.5-R0.1-SNAPSHOT</paper.qualifier>
     </properties>
 
     <build>
@@ -27,6 +30,42 @@
                     <target>${java.version}</target>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <sourcepath>${project.build.sourceDirectory}</sourcepath>
+                    <!-- include this part -->
+                    <links>
+                        <link>https://papermc.io/javadocs/paper/${paper.base}/</link>
+                        <!-- Spigot start -->
+                        <link>https://guava.dev/releases/21.0/api/docs/</link>
+                        <link>https://javadoc.io/doc/org.yaml/snakeyaml/1.27/</link>
+                        <link>https://javadoc.io/doc/org.jetbrains/annotations-java5/20.1.0/</link>
+                        <link>https://javadoc.io/doc/net.md-5/bungeecord-chat/1.16-R0.4/</link>
+                        <!-- Paper start -->
+                        <link>https://jd.adventure.kyori.net/api/4.7.0/</link>
+                        <link>https://jd.adventure.kyori.net/text-serializer-gson/4.7.0/</link>
+                        <link>https://jd.adventure.kyori.net/text-serializer-legacy/4.7.0/</link>
+                        <link>https://jd.adventure.kyori.net/text-serializer-plain/4.7.0/</link>
+                        <!-- Paper end -->
+                        <!-- Spigot end -->
+                    </links>
+                    <additionalOptions>
+                        <option>--show-module-contents all</option>
+                    </additionalOptions>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -67,7 +106,7 @@
         <dependency>
             <groupId>com.destroystokyo.paper</groupId>
             <artifactId>paper-api</artifactId>
-            <version>1.16.5-R0.1-SNAPSHOT</version>
+            <version>${paper.base}${paper.qualifier}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

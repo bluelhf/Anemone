@@ -36,7 +36,7 @@
                 <version>3.2.0</version>
                 <configuration>
                     <sourcepath>${project.build.sourceDirectory}</sourcepath>
-                    <!-- include this part -->
+                    <show>public</show>
                     <links>
                         <link>https://papermc.io/javadocs/paper/${paper.base}/</link>
                         <!-- Spigot start -->

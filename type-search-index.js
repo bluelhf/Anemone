@@ -1,1 +1,0 @@
-typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"io.github.bluelhf.anemone.gui","l":"Anemone"},{"p":"io.github.bluelhf.anemone","l":"Anemones"},{"p":"io.github.bluelhf.anemone.gui","l":"Index"},{"p":"io.github.bluelhf.anemone.util","l":"Items"},{"p":"io.github.bluelhf.anemone.gui","l":"ViewContext"}]

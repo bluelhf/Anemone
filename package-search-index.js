@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"io.github.bluelhf.anemone"},{"l":"io.github.bluelhf.anemone.gui"},{"l":"io.github.bluelhf.anemone.util"}]

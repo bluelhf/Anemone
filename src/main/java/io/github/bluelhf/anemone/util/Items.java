@@ -3,8 +3,10 @@ package io.github.bluelhf.anemone.util;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -13,10 +15,11 @@ import java.util.function.Supplier;
  * It takes an ItemStack supplier and some stack or meta modifiers, and builds an ItemStack
  * by getting the stack from the supplier and applying the given modifiers.
  * */
+@SuppressWarnings("unused") // API
 public class Items {
     private Supplier<ItemStack> stackProvider;
-    private final ArrayList<Consumer<ItemStack>> stackModifiers = new ArrayList<>();
-    private final ArrayList<Consumer<ItemMeta>> metaModifiers = new ArrayList<>();
+    private final Collection<Consumer<ItemStack>> stackModifiers = new ArrayList<>();
+    private final Collection<Consumer<ItemMeta>> metaModifiers = new ArrayList<>();
 
     private Items() {
     }
@@ -29,7 +32,7 @@ public class Items {
      * @see Items#of(ItemStack)
      * @see Items#of(Supplier)
      * */
-    public static Items of(Material material) {
+    public static @NotNull Items of(@NotNull Material material) {
         return of(material, 1);
     }
 
@@ -42,7 +45,7 @@ public class Items {
      * @see Items#of(ItemStack)
      * @see Items#of(Supplier)
      * */
-    public static Items of(Material material, int count) {
+    public static @NotNull Items of(@NotNull Material material, int count) {
         return of(new ItemStack(material, count));
     }
 
@@ -54,7 +57,7 @@ public class Items {
      * @see Items#of(Material, int)
      * @see Items#of(Supplier)
      * */
-    public static Items of(ItemStack stack) {
+    public static @NotNull Items of(ItemStack stack) {
         return of(() -> stack);
     }
 
@@ -66,7 +69,7 @@ public class Items {
      * @see Items#of(Material, int)
      * @see Items#of(ItemStack)
      * */
-    public static Items of(Supplier<ItemStack> stackProvider) {
+    public static @NotNull Items of(Supplier<ItemStack> stackProvider) {
         Items builder = new Items();
         builder.stackProvider = stackProvider;
         return builder;
@@ -80,7 +83,7 @@ public class Items {
      * @see Items#modifyMeta(Consumer)
      * @see Items#build()
      * */
-    public Items modifyStack(Consumer<ItemStack> stackConsumer) {
+    public @NotNull Items modifyStack(Consumer<ItemStack> stackConsumer) {
         stackModifiers.add(stackConsumer);
         return this;
     }
@@ -92,7 +95,7 @@ public class Items {
      * @see Items#modifyStack(Consumer)
      * @see Items#build()
      * */
-    public Items modifyMeta(Consumer<ItemMeta> metaConsumer) {
+    public @NotNull Items modifyMeta(Consumer<ItemMeta> metaConsumer) {
         metaModifiers.add(metaConsumer);
         return this;
     }

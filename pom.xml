@@ -17,7 +17,17 @@
 
         <paper.base>1.16</paper.base>
         <paper.qualifier>.5-R0.1-SNAPSHOT</paper.qualifier>
+
+        <github.global.server>github</github.global.server>
     </properties>
+
+    <distributionManagement>
+        <repository>
+            <id>internal.repo</id>
+            <name>Temporary Staging Repository</name>
+            <url>file://${project.build.directory}/mvn-repo</url>
+        </repository>
+    </distributionManagement>
 
     <build>
         <plugins>
@@ -36,7 +46,7 @@
                 <version>3.2.0</version>
                 <configuration>
                     <sourcepath>${project.build.sourceDirectory}</sourcepath>
-                    <show>public</show>
+                    <show>protected</show>
                     <links>
                         <link>https://papermc.io/javadocs/paper/${paper.base}/</link>
                         <!-- Spigot start -->
@@ -79,6 +89,29 @@
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.github.github</groupId>
+                <artifactId>site-maven-plugin</artifactId>
+                <version>0.11</version>
+                <configuration>
+                    <message>Maven artifacts for ${project.version}</message>
+                    <noJekyll>true</noJekyll>
+                    <outputDirectory>${project.build.directory}/mvn-repo</outputDirectory>
+                    <branch>refs/heads/mvn-repo</branch>
+                    <includes><include>**/*</include></includes>
+                    <repositoryName>Anemone</repositoryName>
+                    <repositoryOwner>bluelhf</repositoryOwner>
+                </configuration>
+                <executions>
+                    <!-- run site-maven-plugin's 'site' target as part of the build's normal 'deploy' phase -->
+                    <execution>
+                        <goals>
+                            <goal>site</goal>
+                        </goals>
+                        <phase>deploy</phase>
                     </execution>
                 </executions>
             </plugin>

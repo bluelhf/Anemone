@@ -5,6 +5,7 @@ package io.github.bluelhf.anemone.gui;
  * It namely contains the page number, the character at its slot in the Anemone template, the total slot number (including previous pages), and the total amount of times the character it represents has appeared (including previous pages).
  * @see Anemone#getTemplate()
  * */
+@SuppressWarnings("unused") // API
 public class Index {
     private final char c;
     private final int page, charIndex, totalIndex;

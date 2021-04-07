@@ -13,6 +13,8 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -23,13 +25,14 @@ import java.util.HashMap;
  * Anemones is a handler singleton for Anemone subclasses. To use Anemones,
  * it must first be initialised with {@link Anemones#init(Plugin)}.
  * */
+@SuppressWarnings("unused") // API
 public class Anemones implements Listener {
-    private static Anemones instance;
+    private static @Nullable Anemones instance;
     private final HashMap<Class<? extends Anemone>, Anemone> anemoneRegistry = new HashMap<>();
     private final HashMap<HumanEntity, ViewContext> entityContexts = new HashMap<>();
     private final ArrayDeque<Plugin> hosts = new ArrayDeque<>();
 
-    private Anemones(Plugin host) {
+    private Anemones(@NotNull Plugin host) {
         hosts.add(host);
     }
 
@@ -37,7 +40,7 @@ public class Anemones implements Listener {
      * Returns the initialised Anemones instance.
      * @return The initialised Anemones instance
      * */
-    public static Anemones getInstance() {
+    public static @Nullable Anemones getInstance() {
         return instance;
     }
 
@@ -47,7 +50,7 @@ public class Anemones implements Listener {
      * Anemones will only disable when the hosts queue is empty.
      * @param host The plugin to initialise Anemones with
      * */
-    public static void init(Plugin host) {
+    public static void init(@NotNull Plugin host) {
         if (instance == null) {
             instance = new Anemones(host);
             Bukkit.getPluginManager().registerEvents(instance, host);
@@ -63,8 +66,9 @@ public class Anemones implements Listener {
      *
      * @see Anemones#register(Class)
      * */
-    public static void register(Anemone anemone) {
+    public static void register(@NotNull Anemone anemone) {
         checkInit();
+        //noinspection ConstantConditions because we just checked
         instance._register(anemone);
     }
 
@@ -76,8 +80,9 @@ public class Anemones implements Listener {
      *
      * @see Anemones#register(Anemone)
      * */
-    public static void register(Class<? extends Anemone> anemoneClass) {
+    public static void register(@NotNull Class<? extends Anemone> anemoneClass) {
         checkInit();
+        //noinspection ConstantConditions because we just checked
         instance._register(anemoneClass);
     }
 
@@ -88,6 +93,7 @@ public class Anemones implements Listener {
      * */
     public static void unregister(Class<? extends Anemone> anemoneClass) {
         checkInit();
+        //noinspection ConstantConditions because we just checked
         instance._unregister(anemoneClass);
     }
 
@@ -98,25 +104,38 @@ public class Anemones implements Listener {
      * @throws IllegalStateException If Anemones isn't initialised
      * @return The resulting {@link ViewContext}
      * */
-    public static ViewContext open(HumanEntity entity, Class<? extends Anemone> anemoneClass) {
+    public static @NotNull ViewContext open(HumanEntity entity, @NotNull Class<? extends Anemone> anemoneClass) {
         checkInit();
+        //noinspection ConstantConditions because we just checked
         return instance._open(entity, anemoneClass);
     }
 
+    /**
+     * Throws an {@link IllegalStateException} if Anemones isn't initialised
+     * @throws IllegalStateException When Anemones isn't initialised
+     * */
     private static void checkInit() {
         if (instance == null) throw new IllegalStateException("Must call Anemones.init() first.");
     }
 
-    private void _register(Anemone anemone) {
+    /**
+     * @see Anemones#register(Anemone)
+     * @hidden Internal use only.
+     * */
+    private void _register(@NotNull Anemone anemone) {
         anemoneRegistry.put(anemone.getClass(), anemone);
     }
 
-    private void _register(Class<? extends Anemone> anemoneClass) {
+    /**
+     * @see Anemones#register(Class)
+     * @hidden Internal use only.
+     * */
+    private void _register(@NotNull Class<? extends Anemone> anemoneClass) {
         try {
             Constructor<? extends Anemone> constructor = anemoneClass.getConstructor();
             constructor.setAccessible(true);
             _register(constructor.newInstance());
-        } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+        } catch (@NotNull NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
             throw new IllegalArgumentException(
                     "Could not register because class " + anemoneClass.getSimpleName() + " does not have a default constructor. " +
                             "Please consider using Anemones.register(Anemone) instead."
@@ -124,11 +143,19 @@ public class Anemones implements Listener {
         }
     }
 
+    /**
+     * @see Anemones#unregister(Class)
+     * @hidden Internal use only.
+     * */
     private void _unregister(Class<? extends Anemone> anemoneClass) {
         anemoneRegistry.remove(anemoneClass);
     }
 
-    private ViewContext _open(HumanEntity entity, Class<? extends Anemone> anemoneClass) {
+    /**
+     * @see Anemones#open(HumanEntity, Class)
+     * @hidden Internal use only.
+     * */
+    private @NotNull ViewContext _open(HumanEntity entity, @NotNull Class<? extends Anemone> anemoneClass) {
         Anemone anemone = anemoneRegistry.get(anemoneClass);
         if (anemone == null)
             throw new IllegalArgumentException("Anemone subclass " + anemoneClass.getSimpleName() + " must be registered before use.");
@@ -139,7 +166,7 @@ public class Anemones implements Listener {
     }
 
     @EventHandler
-    private void onDisable(PluginDisableEvent event) {
+    private void onDisable(@NotNull PluginDisableEvent event) {
         hosts.remove(event.getPlugin());
         if (hosts.size() == 0) {
             close();
@@ -147,21 +174,21 @@ public class Anemones implements Listener {
     }
 
     @EventHandler
-    private void onClick(InventoryClickEvent event) {
+    private void onClick(@NotNull InventoryClickEvent event) {
         if (!entityContexts.containsKey(event.getWhoClicked())) return;
         ViewContext context = entityContexts.get(event.getWhoClicked());
         context.onClick(event);
     }
 
     @EventHandler
-    private void onDrag(InventoryDragEvent event) {
+    private void onDrag(@NotNull InventoryDragEvent event) {
         if (!entityContexts.containsKey(event.getWhoClicked())) return;
         ViewContext context = entityContexts.get(event.getWhoClicked());
         context.onDrag(event);
     }
 
     @EventHandler
-    private void onClose(InventoryCloseEvent event) {
+    private void onClose(@NotNull InventoryCloseEvent event) {
         if (!entityContexts.containsKey(event.getPlayer())) return;
         ViewContext context = entityContexts.get(event.getPlayer());
         context.onClose();
@@ -169,12 +196,16 @@ public class Anemones implements Listener {
     }
 
     @EventHandler
-    private void onOpen(InventoryOpenEvent event) {
+    private void onOpen(@NotNull InventoryOpenEvent event) {
         if (!entityContexts.containsKey(event.getPlayer())) return;
         ViewContext context = entityContexts.get(event.getPlayer());
         context.onOpen();
     }
 
+    /**
+     * Closes Anemones. Executed automatically.
+     * @hidden Internal use only.
+     * */
     private void close() {
         HandlerList.unregisterAll(this);
         hosts.clear();

@@ -2,10 +2,9 @@
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
 
 name: Java CI with Maven
-
 on:
-  push:
-    branches: [ trunk ]
+  release:
+    types: [published, prereleased]
 
 jobs:
   build:
@@ -19,7 +18,18 @@ jobs:
       with:
         java-version: '11'
         distribution: 'adopt'
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml
-    - name: Build Javadoc
+    - name: Build and Deploy with Maven
+      run: mvn -B deploy --file pom.xml
+    - name: Build Javadocs
       run: mvn -B javadoc:javadoc --file pom.xml
+
+    - name: Stage
+      run: |
+        mkdir staging
+        cp -r target/* staging
+    - name: Deploy Javadocs
+      uses: peaceiris/actions-gh-pages@v3.7.3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./staging/site/apidocs
+        keep_files: true

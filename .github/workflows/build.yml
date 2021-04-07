@@ -23,13 +23,3 @@ jobs:
       run: mvn -B package --file pom.xml
     - name: Build Javadoc
       run: mvn -B javadoc:javadoc --file pom.xml
-    - name: Stage
-      run: |
-        mkdir staging
-        cp -r target/* staging
-    - name: Deploy Javadoc
-      uses: peaceiris/actions-gh-pages@v3.7.3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./staging/site/apidocs
-        keep_files: true

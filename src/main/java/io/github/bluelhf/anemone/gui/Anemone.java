@@ -30,6 +30,8 @@ public abstract class Anemone {
 
     /**
      * Returns an item based on the index and view context.
+     * @param index The index that the item is being generated for
+     * @param context The context that the item is being generated in
      * @return An item based on the index and view context.
      * */
     public abstract ItemStack itemFor(Index index, ViewContext context);

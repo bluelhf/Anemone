@@ -1,5 +1,6 @@
 package io.github.bluelhf.anemone.gui;
 
+import io.github.bluelhf.anemone.Anemones;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -9,18 +10,15 @@ import org.bukkit.inventory.Inventory;
 
 import java.util.ArrayList;
 
+/**
+ * ViewContext represents the context in which an Anemone subclass is being viewed.
+ * @see Anemones#open(HumanEntity, Class)
+ * */
 public class ViewContext {
     private final Inventory inventory;
     private final HumanEntity viewer;
     private final Anemone host;
     private int page;
-
-    public ViewContext(Inventory inventory, HumanEntity viewer, Anemone host, int page) {
-        this.inventory = inventory;
-        this.viewer = viewer;
-        this.host = host;
-        this.page = page;
-    }
 
     public ViewContext(HumanEntity viewer, Anemone host) {
         this.viewer = viewer;
@@ -29,10 +27,17 @@ public class ViewContext {
         this.inventory = host.getInventory(this);
     }
 
+    /**
+     * Returns the {@link HumanEntity} that this ViewContext is for
+     * @return The HumanEntity that this ViewContext is for
+     * */
     public HumanEntity getViewer() {
         return viewer;
     }
 
+    /**
+     * Opens this ViewContext to the viewer if it is not already open.
+     * */
     public void open() {
         if (!viewer.getOpenInventory().getTopInventory().equals(inventory)) {
             update();
@@ -40,6 +45,9 @@ public class ViewContext {
         }
     }
 
+    /**
+     * Updates the items in this ViewContext's inventory according to this ViewContext's {@link Anemone}
+     * */
     public void update() {
         Inventory newInventory = host.getInventory(this);
         for (int i = 0; i < inventory.getSize(); i++) {
@@ -47,33 +55,60 @@ public class ViewContext {
         }
     }
 
+    /**
+     * Increments this ViewContext's page, updating the display for the viewer
+     * */
     public void next() {
         this.page++;
         update();
     }
 
+    /**
+     * Decrements this ViewContext's page, updating the display for the viewer
+     * */
     public void previous() {
         this.page--;
         update();
     }
 
+    /**
+     * Resets this ViewContext's page, updating the display for the viewer
+     * */
     public void reset() {
         this.page = 0;
         update();
     }
 
+    /**
+     * Returns the page that this ViewContext is on
+     * @return The page that this ViewContext is on
+     * */
     public int getPage() {
         return page;
     }
 
+    /**
+     * Sets this ViewContext's page, updating the display for the viewer
+     * @param page The page to set the ViewContext's page to
+     * */
     public void setPage(int page) {
         this.page = page;
+        update();
     }
 
+    /**
+     * Returns the host {@link Anemone} of this ViewContext
+     * @return The host of this {@link Anemone} of this ViewContext
+     * */
     public Anemone getHost() {
         return host;
     }
 
+    /**
+     * Calls the click method of the host {@link Anemone}.
+     * @deprecated Internal use only.
+     * */
+    @Deprecated
     public void onClick(InventoryClickEvent event) {
         Index index = fromSlot(event.getRawSlot());
         if (index == null) return;
@@ -81,6 +116,11 @@ public class ViewContext {
         host.onClick(index, this, event);
     }
 
+    /**
+     * Calls the drag method of the host {@link Anemone}.
+     * @deprecated Internal use only.
+     * */
+    @Deprecated
     public void onDrag(InventoryDragEvent event) {
         ArrayList<Index> indices = new ArrayList<>();
         for (int rawSlot : event.getRawSlots()) {
@@ -91,10 +131,20 @@ public class ViewContext {
         host.onDrag(indices, this, event);
     }
 
+    /**
+     * Calls the close method of the host {@link Anemone}.
+     * @deprecated Internal use only.
+     * */
+    @Deprecated
     public void onClose(InventoryCloseEvent event) {
         host.onClose(this);
     }
 
+    /**
+     * Calls the open method of the host {@link Anemone}.
+     * @deprecated Internal use only.
+     * */
+    @Deprecated
     public void onOpen(InventoryOpenEvent event) {
         host.onOpen(this);
     }

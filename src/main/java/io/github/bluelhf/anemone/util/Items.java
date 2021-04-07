@@ -74,7 +74,7 @@ public class Items {
 
 
     /**
-     * Sets the generated {@link ItemStack} to be modified by the given {@link Consumer}<{@link ItemStack}>
+     * Sets the generated {@link ItemStack} to be modified by the given {@link Consumer}&lt;{@link ItemStack}&gt;
      * @param stackConsumer The consumer that modifies the stack
      * @return This Items
      * @see Items#modifyMeta(Consumer)
@@ -86,7 +86,7 @@ public class Items {
     }
 
     /**
-     * Sets the generated {@link ItemStack} to be modified by the given {@link Consumer}<{@link ItemMeta}>
+     * Sets the generated {@link ItemStack} to be modified by the given {@link Consumer}&lt;{@link ItemMeta}&gt;
      * @param metaConsumer The consumer that modifies the item meta
      * @return This Items
      * @see Items#modifyStack(Consumer)

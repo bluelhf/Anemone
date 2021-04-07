@@ -19,6 +19,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayDeque;
 import java.util.HashMap;
 
+/**
+ * Anemones is a handler singleton for Anemone subclasses. To use Anemones,
+ * it must first be initialised with {@link Anemones#init(Plugin)}.
+ * */
 public class Anemones implements Listener {
     private static Anemones instance;
     private final HashMap<Class<? extends Anemone>, Anemone> anemoneRegistry = new HashMap<>();
@@ -120,7 +124,7 @@ public class Anemones implements Listener {
         }
     }
 
-    public void _unregister(Class<? extends Anemone> anemoneClass) {
+    private void _unregister(Class<? extends Anemone> anemoneClass) {
         anemoneRegistry.remove(anemoneClass);
     }
 

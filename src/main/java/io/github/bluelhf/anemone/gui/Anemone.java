@@ -90,16 +90,17 @@ public abstract class Anemone {
      * */
     protected final @NotNull Inventory getInventory(@NotNull ViewContext context) {
         Inventory inventory = createInventory();
-        int totalCounter = 0;
+        int page = context.getPage();
+        int size = getSize();
+        int totalCounter = page * size;
         HashMap<Character, Integer> charCounter = new HashMap<>();
         for (String s : getTemplate()) {
             for (char c : s.toCharArray()) {
-                charCounter.putIfAbsent(c, 0);
-                int totalIndex = getSize() * context.getPage() + totalCounter;
+                charCounter.putIfAbsent(c, page * getCount(c));
                 int charIndex = charCounter.get(c);
-                Index index = new Index(c, context.getPage(), charIndex, totalIndex);
+                Index index = new Index(c, page, charIndex, totalCounter);
 
-                inventory.setItem(totalCounter, itemFor(index, context));
+                inventory.setItem(totalCounter - page * size, itemFor(index, context));
 
                 charCounter.put(c, charCounter.get(c) + 1);
                 totalCounter++;
@@ -167,7 +168,6 @@ public abstract class Anemone {
      * */
     public final int getCount(char c) {
         List<String> template = getTemplate();
-        String pattern = Pattern.quote("" + c);
         int count = 0;
         for (String s : template) {
             for (char b : s.toCharArray()) {

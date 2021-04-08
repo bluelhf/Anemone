@@ -102,6 +102,7 @@ public abstract class Anemone {
                 inventory.setItem(totalCounter, itemFor(index, context));
 
                 charCounter.put(c, charCounter.get(c) + 1);
+                totalCounter++;
             }
         }
 

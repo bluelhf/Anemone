@@ -94,13 +94,13 @@ public abstract class Anemone {
         HashMap<Character, Integer> charCounter = new HashMap<>();
         for (String s : getTemplate()) {
             for (char c : s.toCharArray()) {
-                charCounter.putIfAbsent(c, 0);
                 int totalIndex = getSize() * context.getPage() + totalCounter;
                 int charIndex = charCounter.get(c);
                 Index index = new Index(c, context.getPage(), charIndex, totalIndex);
 
                 inventory.setItem(totalCounter, itemFor(index, context));
 
+                charCounter.putIfAbsent(c, 0);
                 charCounter.put(c, charCounter.get(c) + 1);
             }
         }

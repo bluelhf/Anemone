@@ -70,7 +70,7 @@ public class ViewContext {
      * Decrements this ViewContext's page, updating the display for the viewer
      */
     public void previous() {
-        this.page--;
+        this.page = this.page > 0 ? page-- : 0;
         update();
     }
 

@@ -136,8 +136,7 @@ public abstract class Anemone {
         if (ch == null) return null;
 
         int perPage = getCount(ch);
-        int charIndex = 0;
-        charIndex += perPage * page;
+        int charIndex = perPage * page;
         charIndex += charsUpTo(slot, ch);
         int totalIndex = getSize() * slot;
         return new Index(ch, page, charIndex, totalIndex);
@@ -211,9 +210,10 @@ public abstract class Anemone {
         dance:
         for (String s : template) {
             for (char ch : s.toCharArray()) {
-                if (c == ch) charCtr++;
                 if (total == rawSlot) break dance;
                 total++;
+
+                if (c == ch) charCtr++;
             }
         }
 

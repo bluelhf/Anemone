@@ -169,7 +169,11 @@ public abstract class Anemone {
         List<String> template = getTemplate();
         String pattern = Pattern.quote("" + c);
         int count = 0;
-        for (String s : template) count += s.split(pattern).length - 1;
+        for (String s : template) {
+            for (char b : s.toCharArray()) {
+                if (b == c) count++;
+            }
+        }
         return count;
     }
 

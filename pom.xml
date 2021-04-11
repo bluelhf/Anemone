@@ -6,7 +6,7 @@
 
     <groupId>io.github.bluelhf</groupId>
     <artifactId>Anemone</artifactId>
-    <version>1.0.1B</version>
+    <version>1.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Anemone</name>

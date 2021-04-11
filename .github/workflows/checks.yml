@@ -28,4 +28,3 @@ jobs:
       run: mvn -B deploy --file pom.xml
     - name: Build Javadocs with Maven 🪶
       run: mvn -B javadoc:javadoc --file pom.xml
-    - name: Bui

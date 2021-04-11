@@ -5,6 +5,9 @@ name: Deploy Everything 🚀
 on:
   release:
     types: [published, prereleased]
+  push:
+    branches:
+    - 'dev/*'
 
 jobs:
   build:

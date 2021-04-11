@@ -5,10 +5,12 @@ name: Run Checks ✔️
 on:
   pull_request:
     branches:
-    - '*'
+    - 'dev/*'
+    - 'trunk'
   push:
     branches:
-    - '*'
+    - 'dev/*'
+    - 'trunk'
 
 jobs:
   build:
@@ -23,6 +25,7 @@ jobs:
         java-version: '11'
         distribution: 'adopt'
     - name: Build Project with Maven 🪶
-      run: mvn -B package --file pom.xml
+      run: mvn -B deploy --file pom.xml
     - name: Build Javadocs with Maven 🪶
       run: mvn -B javadoc:javadoc --file pom.xml
+    - name: Bui

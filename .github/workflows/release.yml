@@ -22,9 +22,9 @@ jobs:
         java-version: '16'
         distribution: 'adopt'
     - name: Build and Deploy with Maven 🪶
-      run: mvn -B deploy --file pom.xml
+      run: mvn -B deploy --file pom.xml -X
     - name: Build Javadocs 📚
-      run: mvn -B javadoc:javadoc --file pom.xml
+      run: mvn -B javadoc:javadoc --file pom.xml -X
 
     - name: Stage
       run: |

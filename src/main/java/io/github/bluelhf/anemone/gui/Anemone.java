@@ -46,6 +46,20 @@ public abstract class Anemone {
     }
 
     /**
+     * Overridden by subclasses that wish to do something when the Anemone is registered.
+     * */
+    @SuppressWarnings({"unused", "EmptyMethod"}) // External subclasses will implement
+    public void onRegister() {
+    }
+
+    /**
+     * Overridden by subclasses that wish to do something when the Anemone is unregistered.
+     * */
+    @SuppressWarnings({"unused", "EmptyMethod"}) // External subclasses will implement
+    public void onUnregister() {
+    }
+
+    /**
      * Overridden by subclasses that wish to implement click functionality.
      * @param index The index that was clicked on.
      * @param context The view context that the click happened in.

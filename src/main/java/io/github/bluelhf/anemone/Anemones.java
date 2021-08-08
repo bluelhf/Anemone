@@ -124,6 +124,7 @@ public class Anemones implements Listener {
      * */
     private void register0(@NotNull Anemone anemone) {
         anemoneRegistry.put(anemone.getClass(), anemone);
+        anemone.onRegister();
     }
 
     /**
@@ -148,7 +149,10 @@ public class Anemones implements Listener {
      * @hidden Internal use only.
      * */
     private void unregister0(Class<? extends Anemone> anemoneClass) {
-        anemoneRegistry.remove(anemoneClass);
+        Anemone anemone;
+        if ((anemone = anemoneRegistry.remove(anemoneClass)) != null) {
+            anemone.onUnregister();
+        }
     }
 
     /**

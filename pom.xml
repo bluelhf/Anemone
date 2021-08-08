@@ -15,8 +15,8 @@
         <java.version>11</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <paper.base>1.16</paper.base>
-        <paper.qualifier>.5-R0.1-SNAPSHOT</paper.qualifier>
+        <paper.base>1.17</paper.base>
+        <paper.qualifier>.1-R0.1-SNAPSHOT</paper.qualifier>
 
         <github.global.server>github</github.global.server>
     </properties>
@@ -150,7 +150,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.destroystokyo.paper</groupId>
+            <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>
             <version>${paper.base}${paper.qualifier}</version>
             <scope>provided</scope>

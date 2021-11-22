@@ -5,10 +5,12 @@ name: Run Checks ✔️
 on:
   pull_request:
     branches:
-    - '*'
+      - 'dev/*'
+      - 'trunk'
   push:
     branches:
-    - '*'
+      - 'dev/*'
+      - 'trunk'
 
 jobs:
   build:

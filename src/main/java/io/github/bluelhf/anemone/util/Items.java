@@ -11,7 +11,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
- * Items is an utility class used to create {@link ItemStack}s.
+ * Items is a utility class used to create {@link ItemStack}s.
  * It takes an ItemStack supplier and some stack or meta modifiers, and builds an ItemStack
  * by getting the stack from the supplier and applying the given modifiers.
  * */

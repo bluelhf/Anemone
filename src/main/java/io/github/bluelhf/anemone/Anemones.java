@@ -68,8 +68,8 @@ public class Anemones implements Listener {
      * */
     public static void register(@NotNull Anemone anemone) {
         checkInit();
-        //noinspection ConstantConditions because we just checked
-        instance._register(anemone);
+        //noinspection ConstantConditions because we just checked you fucking idiot
+        instance.register0(anemone);
     }
 
     /**
@@ -83,7 +83,7 @@ public class Anemones implements Listener {
     public static void register(@NotNull Class<? extends Anemone> anemoneClass) {
         checkInit();
         //noinspection ConstantConditions because we just checked
-        instance._register(anemoneClass);
+        instance.register0(anemoneClass);
     }
 
     /**
@@ -94,7 +94,7 @@ public class Anemones implements Listener {
     public static void unregister(Class<? extends Anemone> anemoneClass) {
         checkInit();
         //noinspection ConstantConditions because we just checked
-        instance._unregister(anemoneClass);
+        instance.unregister0(anemoneClass);
     }
 
     /**
@@ -107,7 +107,7 @@ public class Anemones implements Listener {
     public static @NotNull ViewContext open(HumanEntity entity, @NotNull Class<? extends Anemone> anemoneClass) {
         checkInit();
         //noinspection ConstantConditions because we just checked
-        return instance._open(entity, anemoneClass);
+        return instance.open0(entity, anemoneClass);
     }
 
     /**
@@ -122,19 +122,20 @@ public class Anemones implements Listener {
      * @see Anemones#register(Anemone)
      * @hidden Internal use only.
      * */
-    private void _register(@NotNull Anemone anemone) {
+    private void register0(@NotNull Anemone anemone) {
         anemoneRegistry.put(anemone.getClass(), anemone);
+        anemone.onRegister();
     }
 
     /**
      * @see Anemones#register(Class)
      * @hidden Internal use only.
      * */
-    private void _register(@NotNull Class<? extends Anemone> anemoneClass) {
+    private void register0(@NotNull Class<? extends Anemone> anemoneClass) {
         try {
             Constructor<? extends Anemone> constructor = anemoneClass.getConstructor();
             constructor.setAccessible(true);
-            _register(constructor.newInstance());
+            register0(constructor.newInstance());
         } catch (@NotNull NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
             throw new IllegalArgumentException(
                     "Could not register because class " + anemoneClass.getSimpleName() + " does not have a default constructor. " +
@@ -147,15 +148,18 @@ public class Anemones implements Listener {
      * @see Anemones#unregister(Class)
      * @hidden Internal use only.
      * */
-    private void _unregister(Class<? extends Anemone> anemoneClass) {
-        anemoneRegistry.remove(anemoneClass);
+    private void unregister0(Class<? extends Anemone> anemoneClass) {
+        Anemone anemone;
+        if ((anemone = anemoneRegistry.remove(anemoneClass)) != null) {
+            anemone.onUnregister();
+        }
     }
 
     /**
      * @see Anemones#open(HumanEntity, Class)
      * @hidden Internal use only.
      * */
-    private @NotNull ViewContext _open(HumanEntity entity, @NotNull Class<? extends Anemone> anemoneClass) {
+    private @NotNull ViewContext open0(HumanEntity entity, @NotNull Class<? extends Anemone> anemoneClass) {
         Anemone anemone = anemoneRegistry.get(anemoneClass);
         if (anemone == null)
             throw new IllegalArgumentException("Anemone subclass " + anemoneClass.getSimpleName() + " must be registered before use.");

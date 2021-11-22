@@ -13,7 +13,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.regex.Pattern;
 
 /**
  * Abstract base class for all Anemones.
@@ -44,6 +43,20 @@ public abstract class Anemone {
     @Nullable
     public Component getTitle() {
         return null;
+    }
+
+    /**
+     * Overridden by subclasses that wish to do something when the Anemone is registered.
+     * */
+    @SuppressWarnings({"unused", "EmptyMethod"}) // External subclasses will implement
+    public void onRegister() {
+    }
+
+    /**
+     * Overridden by subclasses that wish to do something when the Anemone is unregistered.
+     * */
+    @SuppressWarnings({"unused", "EmptyMethod"}) // External subclasses will implement
+    public void onUnregister() {
     }
 
     /**
@@ -90,18 +103,20 @@ public abstract class Anemone {
      * */
     protected final @NotNull Inventory getInventory(@NotNull ViewContext context) {
         Inventory inventory = createInventory();
-        int totalCounter = 0;
+        int page = context.getPage();
+        int size = getSize();
+        int totalCounter = page * size;
         HashMap<Character, Integer> charCounter = new HashMap<>();
         for (String s : getTemplate()) {
             for (char c : s.toCharArray()) {
-                int totalIndex = getSize() * context.getPage() + totalCounter;
+                charCounter.putIfAbsent(c, page * getCount(c));
                 int charIndex = charCounter.get(c);
-                Index index = new Index(c, context.getPage(), charIndex, totalIndex);
+                Index index = new Index(c, page, charIndex, totalCounter);
 
-                inventory.setItem(totalCounter, itemFor(index, context));
+                inventory.setItem(totalCounter - page * size, itemFor(index, context));
 
-                charCounter.putIfAbsent(c, 0);
                 charCounter.put(c, charCounter.get(c) + 1);
+                totalCounter++;
             }
         }
 
@@ -135,8 +150,7 @@ public abstract class Anemone {
         if (ch == null) return null;
 
         int perPage = getCount(ch);
-        int charIndex = 0;
-        charIndex += perPage * page;
+        int charIndex = perPage * page;
         charIndex += charsUpTo(slot, ch);
         int totalIndex = getSize() * slot;
         return new Index(ch, page, charIndex, totalIndex);
@@ -167,9 +181,12 @@ public abstract class Anemone {
      * */
     public final int getCount(char c) {
         List<String> template = getTemplate();
-        String pattern = Pattern.quote("" + c);
         int count = 0;
-        for (String s : template) count += s.split(pattern).length - 1;
+        for (String s : template) {
+            for (char b : s.toCharArray()) {
+                if (b == c) count++;
+            }
+        }
         return count;
     }
 
@@ -210,9 +227,10 @@ public abstract class Anemone {
         dance:
         for (String s : template) {
             for (char ch : s.toCharArray()) {
-                if (c == ch) charCtr++;
                 if (total == rawSlot) break dance;
                 total++;
+
+                if (c == ch) charCtr++;
             }
         }
 
